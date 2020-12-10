@@ -11,11 +11,11 @@ const workoutSchema = new Schema(
     exercises: [
       {
         type: { type: String },
-        name: { name: String },
-        duration: { duration: Number },
-        weight: { weight: Number },
-        reps: { rep: Number },
-        sets: { sets: Number },
+        name: { type: String },
+        duration: { type: Number },
+        weight: { type: Number },
+        reps: { type: Number },
+        sets: { type: Number },
         distance: { type: Number },
       },
     ],
@@ -26,6 +26,12 @@ const workoutSchema = new Schema(
     },
   }
 );
+
+workoutSchema.virtual("totalDuration").get(function () {
+  return this.exercises.reduce((total, exercise) => {
+    return total + exercise.duration;
+  }, 0);
+});
 
 workoutSchema.virtual("totalPounds").get(function () {
   return this.exercises.reduce((total, exercise) => {
